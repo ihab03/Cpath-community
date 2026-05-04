@@ -179,21 +179,23 @@ export const removeCommentVote = async (data: { commentId: string; userId: strin
 export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
   if (!files || files.length === 0) return [];
 
-  // Helper to force Azurite internal URLs to use your public DuckDNS domain
   const formatPublicUrl = (rawUrl: string) => {
     if (!rawUrl) return rawUrl;
     
-    // Find where the Azurite container path starts
     const azuritePathIndex = rawUrl.indexOf('/devstoreaccount1');
     if (azuritePathIndex === -1) return rawUrl;
 
     const pathAndQuery = rawUrl.substring(azuritePathIndex);
-    const baseUrl = import.meta.env.VITE_API_BASE_URL; // e.g., https://cpath-backend.duckdns.org
     
+    const fullApiUrl = import.meta.env.VITE_API_URL; 
+    
+
+    const baseUrl = fullApiUrl.replace('/api', ''); 
+    
+
     return `${baseUrl}${pathAndQuery}`;
   };
 
-  
   const ticketRequest = {
     files: files.map((f) => ({ fileName: f.name, contentType: f.type })),
   };
@@ -205,17 +207,15 @@ export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
 
   const finalMediaUrls: string[] = [];
 
- 
   const uploadPromises = files.map((file, index) => {
     const ticket = tickets[index];
-    
     
     const publicFinalUrl = formatPublicUrl(ticket.finalUrl);
     const publicUploadUrl = formatPublicUrl(ticket.uploadUrl);
 
     finalMediaUrls.push(publicFinalUrl); 
 
-
+    // Use standard axios to upload directly to Azurite
     return axios.put(publicUploadUrl, file, {
       headers: {
         'x-ms-blob-type': 'BlockBlob',
@@ -223,7 +223,6 @@ export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
       },
     });
   });
-
 
   await Promise.all(uploadPromises);
 
