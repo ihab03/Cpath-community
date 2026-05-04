@@ -176,16 +176,28 @@ export const removeCommentVote = async (data: { commentId: string; userId: strin
 // ============================================================================
 // 3. MEDIA UPLOAD (VALET KEY PATTERN)
 // ============================================================================
-
 export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
   if (!files || files.length === 0) return [];
 
-  // 1. Map files to the API request format
+  // Helper to force Azurite internal URLs to use your public DuckDNS domain
+  const formatPublicUrl = (rawUrl: string) => {
+    if (!rawUrl) return rawUrl;
+    
+    // Find where the Azurite container path starts
+    const azuritePathIndex = rawUrl.indexOf('/devstoreaccount1');
+    if (azuritePathIndex === -1) return rawUrl;
+
+    const pathAndQuery = rawUrl.substring(azuritePathIndex);
+    const baseUrl = import.meta.env.VITE_API_BASE_URL; // e.g., https://cpath-backend.duckdns.org
+    
+    return `${baseUrl}${pathAndQuery}`;
+  };
+
+  
   const ticketRequest = {
     files: files.map((f) => ({ fileName: f.name, contentType: f.type })),
   };
 
-  // 2. Get secure tickets (SAS URLs) from the CPath Backend
   const { data: tickets } = await axiosInstance.post<UploadTicket[]>(
     '/Media/upload-tickets',
     ticketRequest
@@ -193,14 +205,18 @@ export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
 
   const finalMediaUrls: string[] = [];
 
-  // 3. Upload each file directly to Azure/Azurite concurrently
+ 
   const uploadPromises = files.map((file, index) => {
     const ticket = tickets[index];
-    finalMediaUrls.push(ticket.finalUrl); // Save the permanent link
+    
+    
+    const publicFinalUrl = formatPublicUrl(ticket.finalUrl);
+    const publicUploadUrl = formatPublicUrl(ticket.uploadUrl);
 
-    // CRITICAL: Use standard `axios` here, NOT `axiosInstance`. 
-    // Azure will throw a 403 Signature Error if we pass our JWT Bearer token to a SAS URL.
-    return axios.put(ticket.uploadUrl, file, {
+    finalMediaUrls.push(publicFinalUrl); 
+
+
+    return axios.put(publicUploadUrl, file, {
       headers: {
         'x-ms-blob-type': 'BlockBlob',
         'Content-Type': file.type,
@@ -208,9 +224,8 @@ export const uploadMediaBatch = async (files: File[]): Promise<string[]> => {
     });
   });
 
-  // Wait for all raw file uploads to finish
+
   await Promise.all(uploadPromises);
 
-  // 4. Return the final public URLs to attach to the Post
   return finalMediaUrls;
 };
