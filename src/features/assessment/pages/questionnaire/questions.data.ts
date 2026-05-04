@@ -1,0 +1,65 @@
+import type { Question } from '../../types/assessment';
+
+const rawQuestions = [
+  { "id": 1, "feature": "Artistic", "text": "I would like to write books or plays." },
+  { "id": 2, "feature": "Artistic", "text": "I would like to play a musical instrument." },
+  { "id": 3, "feature": "Artistic", "text": "I would like to compose or arrange music." },
+  { "id": 4, "feature": "Artistic", "text": "I would like to draw pictures." },
+  { "id": 5, "feature": "Artistic", "text": "I would like to create special effects for movies." },
+  { "id": 6, "feature": "Conventional", "text": "I would like to develop a spreadsheet using computer software." },
+  { "id": 7, "feature": "Conventional", "text": "I would like to proofread records or forms." },
+  { "id": 8, "feature": "Conventional", "text": "I would like to load computer software into a large computer network." },
+  { "id": 9, "feature": "Conventional", "text": "I would like to operate a calculator." },
+  { "id": 10, "feature": "Conventional", "text": "I would like to keep shipping and receiving records." },
+  { "id": 11, "feature": "Enterprising", "text": "I would like to buy and sell stocks and bonds." },
+  { "id": 12, "feature": "Enterprising", "text": "I would like to manage a retail store." },
+  { "id": 13, "feature": "Enterprising", "text": "I would like to sell telephone cables to major corporations." },
+  { "id": 14, "feature": "Enterprising", "text": "I would like to negotiate business contracts." },
+  { "id": 15, "feature": "Enterprising", "text": "I would like to represent a client in a lawsuit." },
+  { "id": 16, "feature": "Investigative", "text": "I would like to study ways to reduce water pollution." },
+  { "id": 17, "feature": "Investigative", "text": "I would like to conduct chemical experiments." },
+  { "id": 18, "feature": "Investigative", "text": "I would like to study the movement of planets." },
+  { "id": 19, "feature": "Investigative", "text": "I would like to examine blood samples using a microscope." },
+  { "id": 20, "feature": "Investigative", "text": "I would like to investigate the cause of a fire." },
+  { "id": 21, "feature": "Realistic", "text": "I would like to build kitchen cabinets." },
+  { "id": 22, "feature": "Realistic", "text": "I would like to lay brick or tile." },
+  { "id": 23, "feature": "Realistic", "text": "I would like to repair household appliances." },
+  { "id": 24, "feature": "Realistic", "text": "I would like to raise fish in a fish hatchery." },
+  { "id": 25, "feature": "Realistic", "text": "I would like to assemble electronic parts." },
+  { "id": 26, "feature": "Social", "text": "I would like to teach an individual an exercise routine." },
+  { "id": 27, "feature": "Social", "text": "I would like to help people with personal or emotional problems." },
+  { "id": 28, "feature": "Social", "text": "I would like to give career guidance to people." },
+  { "id": 29, "feature": "Social", "text": "I would like to perform rehabilitation therapy." },
+  { "id": 30, "feature": "Social", "text": "I would like to do volunteer work at a non-profit organization." },
+  { "id": 31, "feature": "Achievement Orientation", "text": "I set personally challenging goals and exert a high level of effort to master tasks and succeed." },
+  { "id": 32, "feature": "Adaptability", "text": "I am flexible and good at adapting to new environments, changing plans, or shifting priorities on the fly." },
+  { "id": 33, "feature": "Attention to Detail", "text": "I am careful about small details and prefer to be thorough and precise in completing work tasks." },
+  { "id": 34, "feature": "Cautiousness", "text": "I tend to make decisions carefully, preferring to think through all consequences before taking action." },
+  { "id": 35, "feature": "Cooperation", "text": "I am pleasant with others on the job and display a good-natured, cooperative attitude." },
+  { "id": 36, "feature": "Dependability", "text": "I am reliable, responsible, and dependable in fulfilling obligations and meeting deadlines." },
+  { "id": 37, "feature": "Empathy", "text": "I am sensitive to the needs and feelings of others and am capable of understanding their perspective." },
+  { "id": 41, "feature": "Humility", "text": "I do not seek the spotlight for myself and am willing to admit when I am wrong or need help." },
+  { "id": 38, "feature": "Initiative", "text": "I am willing to take on new responsibilities and challenges proactively without being told to do so." },
+  { "id": 39, "feature": "Innovation", "text": "I use creativity and alternative thinking to develop new ideas or novel solutions to work-related problems." },
+  { "id": 40, "feature": "Integrity", "text": "I value honesty and ethical behavior above all else, acting with strong moral principles." },
+  { "id": 42, "feature": "Intellectual Curiosity", "text": "I have a strong desire to learn new things and enjoy exploring complex ideas, theories, or concepts." },
+  { "id": 43, "feature": "Leadership Orientation", "text": "I am willing to take charge, offer opinions, and provide direction and guidance to others." },
+  { "id": 44, "feature": "Optimism", "text": "I usually expect the best to happen and maintain a positive, hopeful outlook even during difficulties." },
+  { "id": 45, "feature": "Perseverance", "text": "I persist in the face of obstacles and do not give up easily, even when tasks become difficult." },
+  { "id": 46, "feature": "Self-Confidence", "text": "I feel good about my own abilities and am confident in my judgment and decisions." },
+  { "id": 47, "feature": "Self-Control", "text": "I maintain composure and keep my emotions in check, avoiding aggressive behavior even in difficult situations." },
+  { "id": 48, "feature": "Sincerity", "text": "I act genuinely and transparently, without pretending to be someone I am not." },
+  { "id": 49, "feature": "Social Orientation", "text": "I prefer to work with others rather than alone and enjoy being personally connected with my coworkers." },
+  { "id": 50, "feature": "Stress Tolerance", "text": "I accept criticism well and deal calmly and effectively with high-stress situations." },
+  { "id": 51, "feature": "Tolerance for Ambiguity", "text": "I function well in situations where the rules are not clear, the structure is loose, or the future is uncertain." }
+];
+
+const RIASEC_CATEGORIES = ['Artistic', 'Conventional', 'Enterprising', 'Investigative', 'Realistic', 'Social'];
+
+
+export const ASSESSMENT_QUESTIONS: Question[] = rawQuestions.map((q) => ({
+  id: `${q.feature}_${q.id}`, 
+  category: q.feature,
+  text: q.text,
+  isRiasec: RIASEC_CATEGORIES.includes(q.feature)
+}));

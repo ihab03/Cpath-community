@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pattern: Roboto Flex — body / UI copy. Inter — headings (bold primary, medium secondary). */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Flex:opsz,wght@8..144,400;500;700&display=swap');
+
+@layer base {
+  body {
+    @apply font-roboto font-normal antialiased bg-[#121212] text-white;
+  }
+
+  h1 {
+    @apply font-inter font-bold;
+  }
+
+  h2 {
+    @apply font-inter font-medium;
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-inter font-semibold;
+  }
+}
