@@ -119,7 +119,7 @@ export const RegisterPage = () => {
         {/* RIGHT COLUMN: VISUAL */}
         <div className="hidden md:block flex-1 relative bg-gray-900">
           <img 
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3R1ZGVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60" 
             alt="Students collaborating" 
             className="absolute inset-0 w-full h-full object-cover"
           />

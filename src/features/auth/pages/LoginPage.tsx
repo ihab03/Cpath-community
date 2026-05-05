@@ -58,7 +58,6 @@ export const LoginPage = () => {
             alt="Cyber Security / Login" 
             className="absolute inset-0 w-full h-full object-cover brightness-[0.6] grayscale-[20%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-l from-[#161616] via-transparent to-transparent w-32 right-0" />
           <div className="absolute bottom-12 left-12 right-12 p-8 bg-black/40 backdrop-blur-xl rounded-3xl border border-white/10">
             <h4 className="text-white font-bold text-xl mb-2">Welcome back.</h4>
             <p className="text-gray-300 text-sm leading-relaxed">Pick up right where you left off. The Cpath community is waiting for you.</p>
